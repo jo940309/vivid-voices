@@ -11,7 +11,7 @@
 
 觀眾頁不顯示管理入口，舊 `/#admin` 也不會開啟管理頁。管理網址不是秘密憑證；知道網址者仍須通過伺服器的管理密碼驗證，才能取得管理資料與操作功能。觀眾與管理者使用各自的登入 cookie，不會互相覆蓋。
 
-未設定管理密碼時，啟動畫面顯示本次隨機密碼。正式部署設定 `ADMIN_PASSWORD` 為長且獨特的密碼、`NODE_ENV=production`、`GOOGLE_CLIENT_ID`、`DATA_DIR` 為持久化磁碟路徑；`PORT` 預設 3000，正式版需 HTTPS。
+本機 `npm start` 會讀取未上傳 GitHub 的 `.env`，可在其中設定 `ADMIN_PASSWORD` 和 `GOOGLE_CLIENT_ID`。未設定管理密碼時，啟動畫面顯示本次隨機密碼。正式部署在主機設定 `ADMIN_PASSWORD`、`NODE_ENV=production`、`GOOGLE_CLIENT_ID`、`DATA_DIR` 為持久化磁碟路徑；`PORT` 預設 3000，正式版需 HTTPS。
 
 ## Gmail 登入設定
 
