@@ -1,14 +1,5 @@
 # 活色聲香｜TK流行歌唱社
 
-## 已公開部署
-
-- [觀眾投票頁](https://vivid-voices-tk.joyang940309.chatgpt.site)
-- [獨立管理頁](https://vivid-voices-tk.joyang940309.chatgpt.site/admin)
-
-公開版原始碼位於 `cloud-site/`，使用 Sites、Cloudflare D1 共用票數及 R2 照片；根目錄保留本機 Node.js 版本。更新 GitHub 不會自動更新 Sites，需按 Sites 發布流程重新部署。
-
-Google 登入使用已提供的 Client ID。請在 Google Cloud 的該網頁用戶端「已授權的 JavaScript 來源」加入 `https://vivid-voices-tk.joyang940309.chatgpt.site`（沒有 `/admin` 等路徑）並儲存。尚未授權此來源時，Google 登入可能顯示來源不符。正式登入仍需由實際 Gmail 帳號驗證，並確認 Google Audience 設定允許活動觀眾使用。
-
 響應式水彩甜點投票網站。草莓、檸檬、肉桂各六小組，共六輪。
 
 ## 啟動與網址
@@ -64,4 +55,9 @@ Google Client ID 尚未設定時，登入視窗會顯示「主辦方尚未啟用
 `npm test` 驗證 Gmail 身分條件、偽造／過期／錯誤來源拒絕、nonce 重播、前後台權限與 cookie 分離、重新登入不能重投、只有勝者計分與平手。Google 外部驗證服務在測試中以模擬回應隔離；真實 Google 帳號登入仍需配置 Client ID 後做整合驗證。
 
 `public/assets/desserts.png` 使用內建 ImageGen 製作：三組等距的草莓蛋糕、檸檬塔、肉桂捲，水彩與色鉛筆手帳風格，奶油白底、棕色輪廓、無文字。Google Fonts 無法載入時使用系統字型。
+
+
+## Sites 公開版
+
+此目錄為 Sites 公開部署版本，使用 Cloudflare D1 共用票數與 R2 照片。正式網址：https://vivid-voices-tk.joyang940309.chatgpt.site 。本機原版位於 GitHub 儲存庫根目錄，此版本將另存於 cloud-site 子目錄。管理密碼及 Google Client ID 由 Sites 環境變數提供，不在程式碼中。新雲端資料庫不會自動載入本機測試票數。
 
