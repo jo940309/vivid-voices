@@ -34,3 +34,18 @@ export async function readArchive(id){
   if(!object)throw Object.assign(Error('備份檔案不存在'),{status:404});
   return new Response(object.body,{headers:{'Content-Type':'application/json; charset=utf-8','Content-Disposition':`attachment; filename="event-${id}.json"`,'Cache-Control':'no-store'}});
 }
+export async function clearArchives(body){
+  if(body.confirm!=='刪除紀錄')throw Object.assign(Error('請輸入「刪除紀錄」以確認'),{status:400});
+  const lockId=randomBytes(16).toString('hex');
+  const lock=await env.DB.prepare("INSERT INTO event_settings VALUES('maintenance',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE event_settings.value=''").bind(lockId).run();
+  if(!lock.meta.changes)throw Object.assign(Error('活動正在維護，請稍後'),{status:409});
+  try{
+    const rows=(await env.DB.prepare('SELECT id,object_key FROM event_archives').all()).results;
+    for(const row of rows){
+      if(!/^archives\/[a-f0-9]{32}\.json$/.test(row.object_key))throw Error('Invalid archive key');
+      await env.BUCKET.delete(row.object_key);
+      await env.DB.prepare('DELETE FROM event_archives WHERE id=?').bind(row.id).run();
+    }
+    return {ok:true,deleted:rows.length};
+  }finally{await env.DB.prepare("UPDATE event_settings SET value='' WHERE key='maintenance' AND value=?").bind(lockId).run();}
+}
