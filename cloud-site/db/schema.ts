@@ -5,3 +5,5 @@ export const google_voters=sqliteTable('google_voters',{hash:text('hash').primar
 export const sessions=sqliteTable('sessions',{token:text('token').primaryKey(),kind:text('kind').notNull(),identity:text('identity').notNull(),expires:integer('expires').notNull()});
 export const votes=sqliteTable('votes',{round:integer('round').notNull(),voter:text('voter').notNull(),team:integer('team').notNull()},t=>[primaryKey({columns:[t.round,t.voter]})]);
 export const rate_limits=sqliteTable('rate_limits',{key:text('key').primaryKey(),count:integer('count').notNull(),expires:integer('expires').notNull()});
+export const event_settings=sqliteTable('event_settings',{key:text('key').primaryKey(),value:text('value').notNull()});
+export const event_archives=sqliteTable('event_archives',{id:text('id').primaryKey(),created:integer('created').notNull(),object_key:text('object_key').notNull()});

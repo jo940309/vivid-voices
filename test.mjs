@@ -70,7 +70,7 @@ test('Gmail 驗證、防重複投票、前後台分離與計分', async () => {
     await call('vote', { round: 1, team: teams[1].id }, voters[2]);
     assert.equal((await call('state')).data.rounds[0].counts.length, 0);
     await call('admin/round', { id: 1, action: 'settle' }, admin);
-    s = (await call('state')).data;
+    s = (await call('admin/state',null,admin)).data;
     assert.equal(s.totals[0].total, 2); assert.equal(s.totals[1].total, 0);
     await call('admin/round', { id: 2, action: 'open' }, admin);
     const second = s.rounds[1].teams;
@@ -79,6 +79,14 @@ test('Gmail 驗證、防重複投票、前後台分離與計分', async () => {
     assert.equal((await call('admin/round', { id: 2, action: 'settle' }, admin)).data.tie.length, 2);
     assert.equal((await call('vote', { round: 2, team: second[0].id }, voters[2])).status, 400);
     await call('admin/round', { id: 2, action: 'settle', winner: second[1].id }, admin);
-    assert.equal((await call('state')).data.totals[1].total, 1);
+    assert.equal((await call('admin/state',null,admin)).data.totals[1].total, 1);
+    assert.deepEqual((await call('state')).data.totals, []);
+    assert.equal((await call('admin/finalize', {}, admin)).status, 400);
+    assert.equal((await call('admin/reset', { confirm: '錯誤', resetTeams: false }, admin)).status, 400);
+    const reset = await call('admin/reset', { confirm: '重設投票', resetTeams: false }, admin);
+    assert.equal(reset.status, 200);
+    assert.ok((await call('admin/state', null, admin)).data.rounds.every(r => r.status === 'ready'));
+    assert.equal((await call('admin/archive/' + reset.data.archiveId)).status, 401);
+    assert.equal((await call('admin/archive/' + reset.data.archiveId, null, admin)).data.votes.length, 5);
   } finally { await new Promise(r => server.close(r)); mock.restoreAll(); }
 });

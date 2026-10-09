@@ -1,2 +1,1 @@
-import Script from 'next/script';
-export default function Home(){return <><header><a className="brand" href="/">活色聲香<span>TK流行歌唱社</span></a><nav aria-label="管理導覽"><a href="/">觀眾投票頁</a></nav><button id="account" className="quiet">管理者登入</button></header><main id="app"></main><footer>活色聲香 · TK流行歌唱社<span>每帳號每輪一票，讓喜歡的歌聲被聽見。</span></footer><dialog id="dialog"><button className="close" aria-label="關閉">×</button><div id="dialog-content"></div></dialog><div id="toast" role="status" aria-live="polite"></div><Script src="/admin.js" type="module" strategy="afterInteractive"/></>}
+export {default} from './shell';
